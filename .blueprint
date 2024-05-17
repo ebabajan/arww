@@ -1,0 +1,23 @@
+created:
+    - database/factories/CollectorFactory.php
+    - database/factories/CollectionRateFactory.php
+    - database/factories/CollectionFactory.php
+    - database/factories/SupplierFactory.php
+    - database/factories/SupplyFactory.php
+    - database/migrations/2024_05_17_002343_create_collectors_table.php
+    - database/migrations/2024_05_17_002344_create_collection_rates_table.php
+    - database/migrations/2024_05_17_002345_create_collections_table.php
+    - database/migrations/2024_05_17_002346_create_suppliers_table.php
+    - database/migrations/2024_05_17_002347_create_supplies_table.php
+    - app/Models/collector.php
+    - app/Models/collection_rate.php
+    - app/Models/collection.php
+    - app/Models/supplier.php
+    - app/Models/supply.php
+models:
+    User: {  }
+    collector: { name: string, relationships: { hasMany: collection_rate } }
+    collection_rate: { rate: 'decimal:8,2', relationships: { belongsTo: collector } }
+    collection: { amount: unsignedBigInteger, hawala_amount: unsignedBigInteger, pickup_time: 'nullable timestamp', rate_time: 'nullable timestamp', exchange_rate: 'decimal:10,2', relationships: { belongsTo: collector } }
+    supplier: { name: string, location: 'nullable string', relationships: { hasMany: supply } }
+    supply: { amount: unsignedBigInteger, rate: 'nullable decimal:8,2', date_supplied: 'nullable timestamp', day_rate: 'nullable decimal:8,4', relationships: { belongsTo: supplier } }

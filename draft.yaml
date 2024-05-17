@@ -1,0 +1,33 @@
+models:
+  collector:
+    name: string
+    relationships:
+      hasMany: collection_rate
+
+  collection_rate:
+    rate: decimal:8,2  # Changed to standard format for precision and scale
+    relationships:
+      belongsTo: collector
+
+  collection:
+    amount: unsignedBigInteger
+    hawala_amount: unsignedBigInteger  # Changed to unsignedBigInteger for consistency
+    pickup_time: nullable timestamp
+    rate_time: nullable timestamp
+    exchange_rate: decimal:10,2  # Assuming decimal for exchange_rate for precision
+    relationships:
+      belongsTo: collector
+      
+  supplier:
+    name: string
+    location: nullable string
+    relationships:
+      hasMany: supply
+
+  supply:
+    amount: unsignedBigInteger
+    rate: nullable decimal:8,2  # Changed to standard format for precision and scale
+    date_supplied: nullable timestamp
+    day_rate: nullable decimal:8,4  # Changed to standard format for precision and scale
+    relationships:
+      belongsTo: supplier
