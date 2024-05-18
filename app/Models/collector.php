@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Collector extends Model
 {
@@ -13,10 +12,11 @@ class Collector extends Model
 
     protected $casts = [
         'id' => 'integer',
+        'rate' => 'decimal:2',
     ];
 
-    public function collectionRates(): HasOne
+    public function collections(): HasMany
     {
-        return $this->hasOne(CollectionRate::class);
+        return $this->hasMany(Collection::class);
     }
 }

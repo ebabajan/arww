@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('collectors', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->decimal('rate', 8, 2);
             $table->timestamps();
         });
     }

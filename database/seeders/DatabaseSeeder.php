@@ -25,14 +25,17 @@ class DatabaseSeeder extends Seeder
 
         Collector::factory()->create([
             'name' => "For Secure",
+            'rate' => 1.15,
         ]);
 
         Collector::factory()->create([
             'name' => "Premier x",
+            'rate' => 1.20
         ]);
 
         Collector::factory()->create([
             'name' => "Shpun",
+            'rate' => 1.25
         ]);
 
         Branch::factory()->create([

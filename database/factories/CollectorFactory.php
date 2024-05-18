@@ -22,6 +22,7 @@ class CollectorFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
+            'rate' => $this->faker->randomFloat(2, 0, 999999.99),
         ];
     }
 }

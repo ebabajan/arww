@@ -17,7 +17,7 @@ class CollectorResource extends Resource
 {
     protected static ?string $model = Collector::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
@@ -26,6 +26,9 @@ class CollectorResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('rate')
+                    ->required()
+                    ->numeric(),
             ]);
     }
 
@@ -35,9 +38,9 @@ class CollectorResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('CollectionRates.rate')
-                ->searchable()
-                ->sortable(),    
+                Tables\Columns\TextColumn::make('rate')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

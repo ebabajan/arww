@@ -1,14 +1,10 @@
 models:
   Collector:
     name: string
+    rate: decimal:8,2
     relationships:
-      hasMany: collection_rate
-
-  CollectionRate:
-    rate: decimal:8,2  # Changed to standard format for precision and scale
-    relationships:
-      belongsTo: Collector
-
+      hasMany: Collection
+   
   Collection:
     amount: unsignedBigInteger
     hawala_amount: unsignedBigInteger  # Changed to unsignedBigInteger for consistency
