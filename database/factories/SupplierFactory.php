@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Models\supplier;
+use App\Models\Supplier;
 
 class SupplierFactory extends Factory
 {

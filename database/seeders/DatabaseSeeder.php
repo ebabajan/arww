@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Branch;
+use App\Models\Collector;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -16,8 +18,31 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Test User',
+            'name' => 'Ehsan',
             'email' => 'test@example.com',
+
+        ]);
+
+        Collector::factory()->create([
+            'name' => "For Secure",
+        ]);
+
+        Collector::factory()->create([
+            'name' => "Premier x",
+        ]);
+
+        Collector::factory()->create([
+            'name' => "Shpun",
+        ]);
+
+        Branch::factory()->create([
+            'name' => 'PKM',
+            'location' => 'Peckham'
+        ]);
+
+        Branch::factory()->create([
+            'name' => 'CDL',
+            'location' => 'Collindale'
         ]);
     }
 }

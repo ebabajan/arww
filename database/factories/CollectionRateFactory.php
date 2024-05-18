@@ -4,8 +4,8 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use App\Models\CollectionRate;
 use App\Models\Collector;
-use App\Models\collection_rate;
 
 class CollectionRateFactory extends Factory
 {

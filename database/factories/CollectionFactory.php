@@ -4,8 +4,8 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use App\Models\Collection;
 use App\Models\Collector;
-use App\Models\collection;
 
 class CollectionFactory extends Factory
 {
