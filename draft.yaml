@@ -10,7 +10,11 @@ models:
     hawala_amount: unsignedBigInteger  # Changed to unsignedBigInteger for consistency
     pickup_time: nullable timestamp
     rate_time: nullable timestamp
-    exchange_rate: decimal:10,2  # Assuming decimal for exchange_rate for precision
+    ex_rate_supplier: nullable decimal:4,2 # supplier exchange rate the rate done with supplier
+    supplier_rate: nullable decimal:4,2 # rate of the supplier ie 4.5%
+    amount_to_pay: nullable decimal:10,2
+    exchange_rate: nullable decimal:4,2  # Assuming decimal for exchange_rate for precision
+    profit: nullable decimal:8,2
     relationships:
       belongsTo: Collector
       
@@ -40,3 +44,7 @@ models:
       belongsTo: Branch
 
 
+# supplier provides at 4.6% so 1000 - 46 also converted in to usd 954 * 1.27 = 1211.58
+# also depends on the rate the collector set if usd gone up it will be in profit
+# else will be in loss i.e 1 = 1.265 then 1211.58/1.265 = 957.8 which means a loss 
+# of 3.8 means percentage profit reduction of 0.38% so 4.6 - 0.38 = 4.22

@@ -26,7 +26,11 @@ class CollectionFactory extends Factory
             'hawala_amount' => $this->faker->randomNumber(),
             'pickup_time' => $this->faker->dateTime(),
             'rate_time' => $this->faker->dateTime(),
-            'exchange_rate' => $this->faker->randomFloat(2, 0, 99999999.99),
+            'ex_rate_supplier' => $this->faker->randomFloat(2, 0, 99.99),
+            'supplier_rate' => $this->faker->randomFloat(2, 0, 99.99),
+            'amount_to_pay' => $this->faker->randomFloat(2, 0, 99999999.99),
+            'exchange_rate' => $this->faker->randomFloat(2, 0, 99.99),
+            'profit' => $this->faker->randomFloat(2, 0, 999999.99),
             'collector_id' => Collector::factory(),
         ];
     }

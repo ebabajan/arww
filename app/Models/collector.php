@@ -15,7 +15,7 @@ class Collector extends Model
         'rate' => 'decimal:2',
     ];
 
-    public function collections(): HasMany
+    public function collection(): HasMany
     {
         return $this->hasMany(Collection::class);
     }

@@ -17,7 +17,11 @@ return new class extends Migration
             $table->unsignedBigInteger('hawala_amount');
             $table->timestamp('pickup_time')->nullable();
             $table->timestamp('rate_time')->nullable();
-            $table->decimal('exchange_rate', 10, 2);
+            $table->decimal('ex_rate_supplier', 4, 2)->nullable();
+            $table->decimal('supplier_rate', 4, 2)->nullable();
+            $table->decimal('amount_to_pay', 10, 2)->nullable();
+            $table->decimal('exchange_rate', 4, 2)->nullable();
+            $table->decimal('profit', 8, 2)->nullable();
             $table->foreignId('collector_id');
             $table->timestamps();
         });
