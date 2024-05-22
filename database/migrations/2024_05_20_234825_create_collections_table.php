@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('supplier_rate', 4, 2)->nullable();
             $table->decimal('amount_to_pay', 10, 2)->nullable();
             $table->decimal('exchange_rate', 4, 2)->nullable();
+            $table->decimal('overheads', 10, 2)->nullable();
             $table->decimal('profit', 8, 2)->nullable();
             $table->foreignId('collector_id');
             $table->timestamps();

@@ -28,6 +28,28 @@ class Collection extends Model
     {
         return $this->belongsTo(Collector::class);
     }
+
+    public function calculateCollectorFee()
+    {
+        $amount = $this->amount ?? 0;
+        $hawalaAmount = $this->hawala_amount ?? 0;
+        $rate = $this->collector->rate ?? 1;
+
+        $this->colFee = $amount - $hawalaAmount;
+        return ($rate/100 * $this->colFee) ;
+    }
+
+    public function profit()
+    {
+        $collectorFee = $this->calculateCollectorFee();
+        $amountToPay = $this->amount_to_pay ?? 0;
+        $exchangeRate = $this->exchange_rate ?? 1;
+        $profit = $this->amount - $this->overheads - $this->hawala_amount - $collectorFee - ($amountToPay / $exchangeRate);
+        return $profit;
+    }
+
+
+
     public function calculateAmountToPay()
     {
         $amount = $this->amount ?? 0;
