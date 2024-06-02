@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Http\Livewire\TotalExpenses;
 use App\Filament\Resources\ExpenseResource\Pages;
 use App\Filament\Resources\ExpenseResource\RelationManagers;
 use App\Models\Expense;
@@ -17,7 +18,7 @@ class ExpenseResource extends Resource
 {
     protected static ?string $model = Expense::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-currency-pound';
+    protected static ?string $navigationIcon = 'heroicon-o-calculator';
 
     public static function form(Form $form): Form
     {
@@ -29,7 +30,8 @@ class ExpenseResource extends Resource
                 Forms\Components\TextInput::make('amount')
                     ->required()
                     ->numeric(),
-                Forms\Components\DateTimePicker::make('date_expense')
+                Forms\Components\DatePicker::make('date_expense')
+                    ->native(false)
                     ->required(),
                 Forms\Components\Select::make('branch_id')
                     ->relationship('branch', 'name')
@@ -40,6 +42,7 @@ class ExpenseResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+         
             ->columns([
                 Tables\Columns\TextColumn::make('type')
                     ->searchable(),

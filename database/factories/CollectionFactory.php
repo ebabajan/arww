@@ -29,7 +29,8 @@ class CollectionFactory extends Factory
             'ex_rate_supplier' => $this->faker->randomFloat(2, 0, 99.99),
             'supplier_rate' => $this->faker->randomFloat(2, 0, 99.99),
             'amount_to_pay' => $this->faker->randomFloat(2, 0, 99999999.99),
-            'exchange_rate' => $this->faker->randomFloat(2, 0, 99.99),
+            'exchange_rate' => $this->faker->randomFloat(4, 0, .9999),
+            'overheads' => $this->faker->randomFloat(2, 0, 999999.99),
             'profit' => $this->faker->randomFloat(2, 0, 999999.99),
             'collector_id' => Collector::factory(),
         ];

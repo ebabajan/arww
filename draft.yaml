@@ -13,7 +13,8 @@ models:
     ex_rate_supplier: nullable decimal:4,2 # supplier exchange rate the rate done with supplier
     supplier_rate: nullable decimal:4,2 # rate of the supplier ie 4.5%
     amount_to_pay: nullable decimal:10,2
-    exchange_rate: nullable decimal:4,2  # Assuming decimal for exchange_rate for precision
+    exchange_rate: nullable decimal:4,4  # Assuming decimal for exchange_rate for precision
+    overheads: nullable decimal:8,2
     profit: nullable decimal:8,2
     relationships:
       belongsTo: Collector

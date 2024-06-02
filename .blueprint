@@ -5,12 +5,12 @@ created:
     - database/factories/SupplyFactory.php
     - database/factories/BranchFactory.php
     - database/factories/ExpenseFactory.php
-    - database/migrations/2024_05_20_234824_create_collectors_table.php
-    - database/migrations/2024_05_20_234825_create_collections_table.php
-    - database/migrations/2024_05_20_234826_create_suppliers_table.php
-    - database/migrations/2024_05_20_234827_create_supplies_table.php
-    - database/migrations/2024_05_20_234828_create_branches_table.php
-    - database/migrations/2024_05_20_234829_create_expenses_table.php
+    - database/migrations/2024_05_29_233233_create_collectors_table.php
+    - database/migrations/2024_05_29_233234_create_collections_table.php
+    - database/migrations/2024_05_29_233235_create_suppliers_table.php
+    - database/migrations/2024_05_29_233236_create_supplies_table.php
+    - database/migrations/2024_05_29_233237_create_branches_table.php
+    - database/migrations/2024_05_29_233238_create_expenses_table.php
     - app/Models/Collector.php
     - app/Models/Collection.php
     - app/Models/Supplier.php
@@ -20,7 +20,7 @@ created:
 models:
     User: { name: string, email: string, email_verified_at: 'timestamp nullable', password: string, remember_token: 'string:100 nullable' }
     Collector: { name: string, rate: 'decimal:8,2', relationships: { hasMany: Collection } }
-    Collection: { amount: unsignedBigInteger, hawala_amount: unsignedBigInteger, pickup_time: 'nullable timestamp', rate_time: 'nullable timestamp', ex_rate_supplier: 'nullable decimal:4,2', supplier_rate: 'nullable decimal:4,2', amount_to_pay: 'nullable decimal:10,2', exchange_rate: 'nullable decimal:4,2', profit: 'nullable decimal:8,2', relationships: { belongsTo: Collector } }
+    Collection: { amount: unsignedBigInteger, hawala_amount: unsignedBigInteger, pickup_time: 'nullable timestamp', rate_time: 'nullable timestamp', ex_rate_supplier: 'nullable decimal:4,2', supplier_rate: 'nullable decimal:4,2', amount_to_pay: 'nullable decimal:10,2', exchange_rate: 'nullable decimal:4,4', overheads: 'nullable decimal:8,2', profit: 'nullable decimal:8,2', relationships: { belongsTo: Collector } }
     Supplier: { name: string, location: 'nullable string', relationships: { hasMany: supply } }
     Supply: { amount: unsignedBigInteger, rate: 'nullable decimal:8,2', date_supplied: 'nullable timestamp', day_rate: 'nullable decimal:8,4', relationships: { belongsTo: supplier } }
     Branch: { name: string, location: 'nullable string' }

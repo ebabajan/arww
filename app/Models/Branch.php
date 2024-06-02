@@ -12,4 +12,9 @@ class Branch extends Model
     protected $casts = [
         'id' => 'integer',
     ];
+
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class);
+    }
 }

@@ -15,17 +15,7 @@ class CollectionResource extends Resource
 {
     protected static ?string $model = Collection::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-    // public static function getLabel(): string
-    // {
-    //     return __('Custom Label');
-    // }
-
-    // public static function getPluralLabel(): string
-    // {
-    //     return __('Custom Labels');
-    // }
+    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
 
 
     public static function form(Form $form): Form
@@ -43,8 +33,14 @@ class CollectionResource extends Resource
                     ->reactive()
                     ->label("Hawala")
                     ->afterStateUpdated(fn ($state, callable $get, callable $set) => self::updateValues($get, $set)), 
-                Forms\Components\DateTimePicker::make('pickup_time'),
+                Forms\Components\DatePicker::make('pickup_time')
+                    ->prefix('Click To Select Date')
+                    ->native(false)
+                    ->label('Pick Up'),
                 Forms\Components\DateTimePicker::make('rate_time')
+                    ->label('Time of Conversion')
+                    ->prefix('Date of Conversion')
+                    ->native(false)
                     ->reactive()
                     ->afterStateUpdated(fn ($state, callable $get, callable $set) => self::updateValues($get, $set)), 
                 Forms\Components\TextInput::make('ex_rate_supplier')
@@ -52,6 +48,7 @@ class CollectionResource extends Resource
                     ->reactive()
                     ->afterStateUpdated(fn ($state, callable $get, callable $set) => self::updateValues($get, $set)), 
                 Forms\Components\TextInput::make('supplier_rate')
+                    ->required()
                     ->numeric()
                     ->reactive()
                     ->afterStateUpdated(fn ($state, callable $get, callable $set) => self::updateValues($get, $set)), 
@@ -69,6 +66,7 @@ class CollectionResource extends Resource
                 ->hidden(fn (Page $livewire) => $livewire instanceof Pages\CreateCollection)
                 ->afterStateUpdated(fn ($state, callable $get, callable $set) => self::updateValues($get, $set)),
                 Forms\Components\TextInput::make('profit')
+                    ->readOnly()
                     ->numeric(),
                 Forms\Components\Select::make('collector_id')
                     ->relationship('collector', 'name')
@@ -127,9 +125,10 @@ class CollectionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('amount')
-                    ->label('Hawala')
+                    ->label('Collection')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('hawala_amount')
+                    ->label('H-Amount')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('pickup_time')
                     ->dateTime()
@@ -140,12 +139,16 @@ class CollectionResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('ex_rate_supplier')
+                    ->label('Rate done')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('supplier_rate')
+                    ->label('% Supplier')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('amount_to_pay')
+                ->label('Payable')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('exchange_rate')
+                    ->label('Conversion')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('profit')
                     ->sortable(),
