@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class BranchExpenses extends Widget
 {
     protected static string $view = 'filament.widgets.branch-expenses';
-    protected string|int|array $columnSpan = 'full';
+    protected int | string | array $columnSpan = 1;
     
     protected function getViewData(): array
     {
