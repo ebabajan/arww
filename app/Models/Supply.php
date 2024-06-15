@@ -13,9 +13,9 @@ class Supply extends Model
     protected $casts = [
         'id' => 'integer',
         'amount' => 'integer',
-        'rate' => 'decimal:2',
+        'ex_rate' => 'decimal:4',
         'date_supplied' => 'timestamp',
-        'day_rate' => 'decimal:4',
+        'total_payable' => 'decimal:2',
         'supplier_id' => 'integer',
     ];
 

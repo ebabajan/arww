@@ -2,187 +2,78 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CollectionResource\Pages;
-use App\Models\Collection;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
+use App\Models\Collection;
 use Filament\Tables\Table;
-use Filament\Resources\Pages\Page;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\DateTimePicker;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\CollectionResource\Pages;
+use App\Filament\Resources\CollectionResource\RelationManagers;
 
 class CollectionResource extends Resource
 {
     protected static ?string $model = Collection::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
-
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('amount')
+                TextInput::make('amount_collected')
                     ->required()
-                    ->numeric()
-                    ->reactive()
-                    ->afterStateUpdated(fn ($state, callable $get, callable $set) => self::updateValues($get, $set)), 
-                Forms\Components\TextInput::make('hawala_amount')
-                    ->required()
-                    ->numeric()
-                    ->reactive()
-                    ->label("Hawala")
-                    ->afterStateUpdated(fn ($state, callable $get, callable $set) => self::updateValues($get, $set)), 
-                Forms\Components\DatePicker::make('pickup_time')
-                    ->prefix('Click To Select Date')
-                    ->native(false)
-                    ->label('Pick Up'),
-                Forms\Components\DateTimePicker::make('rate_time')
-                    ->label('Time of Conversion')
-                    ->prefix('Date of Conversion')
-                    ->native(false)
-                    ->reactive()
-                    ->afterStateUpdated(fn ($state, callable $get, callable $set) => self::updateValues($get, $set)), 
-                Forms\Components\TextInput::make('ex_rate_supplier')
-                    ->numeric()
-                    ->reactive()
-                    ->afterStateUpdated(fn ($state, callable $get, callable $set) => self::updateValues($get, $set)), 
-                Forms\Components\TextInput::make('supplier_rate')
-                    ->required()
-                    ->numeric()
-                    ->reactive()
-                    ->afterStateUpdated(fn ($state, callable $get, callable $set) => self::updateValues($get, $set)), 
-                Forms\Components\TextInput::make('amount_to_pay')
-                    ->numeric()
-                    ->disabled()
-                    ->hidden(fn (Page $livewire) => $livewire instanceof Pages\CreateCollection),
-                Forms\Components\TextInput::make('overheads')
-                    ->numeric()
-                    ->reactive()
-                    ->afterStateUpdated(fn ($state, callable $get, callable $set) => self::updateValues($get, $set)),  
-                Forms\Components\TextInput::make('exchange_rate')
-                ->numeric()
-                ->reactive()
-                ->hidden(fn (Page $livewire) => $livewire instanceof Pages\CreateCollection)
-                ->afterStateUpdated(fn ($state, callable $get, callable $set) => self::updateValues($get, $set)),
-                Forms\Components\TextInput::make('profit')
-                    ->readOnly()
                     ->numeric(),
-                Forms\Components\Select::make('collector_id')
-                    ->relationship('collector', 'name')
+                TextInput::make('hawala_amount')
+                    ->required()
+                    ->numeric(),
+                DateTimePicker::make('pickup_time')
+                    ->nullable(),
+                TextInput::make('amount_to_pay')
+                    ->nullable()
+                    ->numeric()
+                    ->prefix('$'),
+                TextInput::make('overheads')
+                    ->nullable()
+                    ->numeric()
+                    ->prefix('£'),
+                Select::make('supply_id')
+                    ->relationship('supply', 'amount') // Assuming 'name' is the display field
+                    ->required(),
+                Select::make('collector_id')
+                    ->relationship('collector', 'name') // Assuming 'name' is the display field
                     ->required(),
             ]);
-    }
-
-    protected static function updateValues(callable $get, callable $set)
-    {
-        // Update amount_to_pay
-        $amount = $get('amount') ?? 0;
-        $hawalaAmount = $get('hawala_amount') ?? 0;
-        $supplierRate = $get('supplier_rate') ?? 0;
-        $exRateSupplier = $get('ex_rate_supplier') ?? 1;
-        $overheads = $get('overheads') ?? 0;
-        $netAmount = $amount - $hawalaAmount;
-        $amountToPay = ($netAmount - ($netAmount * $supplierRate / 100)) * $exRateSupplier;
-        $set('amount_to_pay', $amountToPay);
-
-        // Update profit
-        $exchangeRate = $get('exchange_rate') ?? 1;
-        $collection = new Collection([
-            'amount' => $amount,
-            'hawala_amount' => $hawalaAmount,
-            'supplier_rate' => $supplierRate,
-            'exchange_rate' => $exchangeRate,
-            'amount_to_pay' => $amountToPay,
-            'overheads' => $overheads,
-            'collector_id' => $get('collector_id'),
-        ]);
-
-        // Ensure the collector is loaded
-        if ($collection->collector) {
-            $profit = $collection->profit();
-            $set('profit', $profit);
-        }
-    }
-
-
-    protected static function updateAmountToPay(callable $set)
-    {
-        return function ($state, callable $get) use ($set) {
-            $amount = $get('amount') ?? 0;
-            $hawalaAmount = $get('hawala_amount') ?? 0;
-            $supplierRate = $get('supplier_rate') ?? 0;
-            $exRateSupplier = $get('ex_rate_supplier') ?? 1;
-
-            $netAmount = $amount - $hawalaAmount;
-            $amountToPay = ($netAmount - ($netAmount * $supplierRate / 100)) * $exRateSupplier;
-            $set('amount_to_pay', $amountToPay);
-        };
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('amount')
-                    ->label('Collection')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('hawala_amount')
-                    ->label('H-Amount')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('pickup_time')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('rate_time')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('ex_rate_supplier')
-                    ->label('Rate done')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('supplier_rate')
-                    ->label('% Supplier')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('amount_to_pay')
-                ->label('Payable')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('exchange_rate')
-                    ->label('Conversion')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('profit')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('collector.name')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                //
             ])
             ->filters([
-                // Add any table filters if needed
+                //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->slideOver(),
-                Tables\Actions\Action::make('Calculate')
-                    ->action(function (Collection $record) {
-                        $record->calculateProfit();
-                    })
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            // Define any relations if needed
+            //
         ];
     }
 
@@ -191,7 +82,7 @@ class CollectionResource extends Resource
         return [
             'index' => Pages\ListCollections::route('/'),
             'create' => Pages\CreateCollection::route('/create'),
-            //'edit' => Pages\EditCollection::route('/{record}/edit'),
+            'edit' => Pages\EditCollection::route('/{record}/edit'),
         ];
     }
 }

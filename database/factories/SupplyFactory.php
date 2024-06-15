@@ -23,9 +23,9 @@ class SupplyFactory extends Factory
     {
         return [
             'amount' => $this->faker->randomNumber(),
-            'rate' => $this->faker->randomFloat(2, 0, 999999.99),
+            'ex_rate' => $this->faker->randomFloat(4, 0, .9999),
             'date_supplied' => $this->faker->dateTime(),
-            'day_rate' => $this->faker->randomFloat(4, 0, 9999.9999),
+            'total_payable' => $this->faker->randomFloat(2, 0, 99999999.99),
             'supplier_id' => Supplier::factory(),
         ];
     }

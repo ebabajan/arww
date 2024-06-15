@@ -6,6 +6,7 @@ use Filament\Widgets\ChartWidget;
  
 use App\Models\Expense;
 use App\Models\Collection;
+use App\Models\Profit;
 use Carbon\Carbon;
 use Filament\Widgets\Concerns\CanPoll;
 
@@ -39,7 +40,7 @@ class WeeklyProfit extends ChartWidget
                     ->sum('amount');
 
                 // Fetch the sum of profit for the current week from collections
-                $weeklyProfit = Collection::whereBetween('created_at', [$currentWeekStart, $currentWeekEnd])
+                $weeklyProfit = Profit::whereBetween('created_at', [$currentWeekStart, $currentWeekEnd])
                     ->sum('profit');
 
                 // Calculate the weekly profit

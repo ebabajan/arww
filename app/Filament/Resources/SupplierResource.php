@@ -17,9 +17,7 @@ class SupplierResource extends Resource
 {
     protected static ?string $model = Supplier::class;
 
-    //protected static ?string $navigationIcon = 'heroicon-o-building-library';
-
-    public static ? string $navigationGroup = "Supply";
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
@@ -28,8 +26,8 @@ class SupplierResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('location')
-                    ->maxLength(255),
+                Forms\Components\TextInput::make('rate')
+                    ->numeric(),
             ]);
     }
 
@@ -39,8 +37,9 @@ class SupplierResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('location')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('rate')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

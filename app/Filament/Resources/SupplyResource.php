@@ -17,9 +17,7 @@ class SupplyResource extends Resource
 {
     protected static ?string $model = Supply::class;
 
-    //protected static ?string $navigationIcon = 'heroicon-o-credit-card';
-
-    public static ? string $navigationGroup = "Supply";
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
@@ -28,10 +26,10 @@ class SupplyResource extends Resource
                 Forms\Components\TextInput::make('amount')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('rate')
+                Forms\Components\TextInput::make('ex_rate')
                     ->numeric(),
                 Forms\Components\DateTimePicker::make('date_supplied'),
-                Forms\Components\TextInput::make('day_rate')
+                Forms\Components\TextInput::make('total_payable')
                     ->numeric(),
                 Forms\Components\Select::make('supplier_id')
                     ->relationship('supplier', 'name')
@@ -46,13 +44,13 @@ class SupplyResource extends Resource
                 Tables\Columns\TextColumn::make('amount')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('rate')
+                Tables\Columns\TextColumn::make('ex_rate')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('date_supplied')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('day_rate')
+                Tables\Columns\TextColumn::make('total_payable')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('supplier.name')

@@ -12,6 +12,7 @@ class Supplier extends Model
 
     protected $casts = [
         'id' => 'integer',
+        'rate' => 'decimal:2',
     ];
 
     public function supplies(): HasMany

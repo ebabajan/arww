@@ -1,18 +1,24 @@
 created:
     - database/factories/CollectorFactory.php
     - database/factories/CollectionFactory.php
+    - database/factories/BalanceFactory.php
+    - database/factories/ProfitFactory.php
     - database/factories/SupplierFactory.php
     - database/factories/SupplyFactory.php
     - database/factories/BranchFactory.php
     - database/factories/ExpenseFactory.php
-    - database/migrations/2024_05_29_233233_create_collectors_table.php
-    - database/migrations/2024_05_29_233234_create_collections_table.php
-    - database/migrations/2024_05_29_233235_create_suppliers_table.php
-    - database/migrations/2024_05_29_233236_create_supplies_table.php
-    - database/migrations/2024_05_29_233237_create_branches_table.php
-    - database/migrations/2024_05_29_233238_create_expenses_table.php
+    - database/migrations/2024_06_13_141330_create_collectors_table.php
+    - database/migrations/2024_06_13_141331_create_collections_table.php
+    - database/migrations/2024_06_13_141332_create_balances_table.php
+    - database/migrations/2024_06_13_141333_create_profits_table.php
+    - database/migrations/2024_06_13_141334_create_suppliers_table.php
+    - database/migrations/2024_06_13_141335_create_supplies_table.php
+    - database/migrations/2024_06_13_141336_create_branches_table.php
+    - database/migrations/2024_06_13_141337_create_expenses_table.php
     - app/Models/Collector.php
     - app/Models/Collection.php
+    - app/Models/Balance.php
+    - app/Models/Profit.php
     - app/Models/Supplier.php
     - app/Models/Supply.php
     - app/Models/Branch.php
@@ -20,8 +26,10 @@ created:
 models:
     User: { name: string, email: string, email_verified_at: 'timestamp nullable', password: string, remember_token: 'string:100 nullable' }
     Collector: { name: string, rate: 'decimal:8,2', relationships: { hasMany: Collection } }
-    Collection: { amount: unsignedBigInteger, hawala_amount: unsignedBigInteger, pickup_time: 'nullable timestamp', rate_time: 'nullable timestamp', ex_rate_supplier: 'nullable decimal:4,2', supplier_rate: 'nullable decimal:4,2', amount_to_pay: 'nullable decimal:10,2', exchange_rate: 'nullable decimal:4,4', overheads: 'nullable decimal:8,2', profit: 'nullable decimal:8,2', relationships: { belongsTo: Collector } }
-    Supplier: { name: string, location: 'nullable string', relationships: { hasMany: supply } }
-    Supply: { amount: unsignedBigInteger, rate: 'nullable decimal:8,2', date_supplied: 'nullable timestamp', day_rate: 'nullable decimal:8,4', relationships: { belongsTo: supplier } }
+    Collection: { amount_collected: unsignedBigInteger, hawala_amount: unsignedBigInteger, pickup_time: 'nullable timestamp', amount_to_pay: 'nullable decimal:10,2', overheads: 'nullable decimal:8,2', relationships: { belongsTo: 'Supply, Collector' } }
+    Balance: { total_payable: 'nullable decimal:10,2', amount_paid_1: 'nullable decimal:10,2', amount_paid_2: 'nullable decimal:10,2', amount_paid_3: 'nullable decimal:10,2', amount_paid_4: 'nullable decimal:10,2', amount_paid_5: 'nullable decimal:10,2', remaining: 'nullable decimal:10,2', relationships: { belongsTo: Supply } }
+    Profit: { rate_time: 'nullable timestamp', converted: 'nullable decimal:4,4', profit: 'nullable decimal:8,2', relationships: { belongsTo: Collection } }
+    Supplier: { name: string, rate: 'nullable decimal:4,2', relationships: { hasMany: Supply } }
+    Supply: { amount: unsignedBigInteger, ex_rate: 'nullable decimal:4,4', date_supplied: 'nullable timestamp', total_payable: 'nullable decimal:10,2', relationships: { belongsTo: Supplier } }
     Branch: { name: string, location: 'nullable string' }
     Expense: { type: string, amount: 'decimal:8,2', date_expense: timestamp, relationships: { belongsTo: Branch } }

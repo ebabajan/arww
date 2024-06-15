@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\Collection;
 use App\Models\Collector;
+use App\Models\Supply;
 
 class CollectionFactory extends Factory
 {
@@ -22,16 +23,12 @@ class CollectionFactory extends Factory
     public function definition(): array
     {
         return [
-            'amount' => $this->faker->randomNumber(),
+            'amount_collected' => $this->faker->randomNumber(),
             'hawala_amount' => $this->faker->randomNumber(),
             'pickup_time' => $this->faker->dateTime(),
-            'rate_time' => $this->faker->dateTime(),
-            'ex_rate_supplier' => $this->faker->randomFloat(2, 0, 99.99),
-            'supplier_rate' => $this->faker->randomFloat(2, 0, 99.99),
             'amount_to_pay' => $this->faker->randomFloat(2, 0, 99999999.99),
-            'exchange_rate' => $this->faker->randomFloat(4, 0, .9999),
             'overheads' => $this->faker->randomFloat(2, 0, 999999.99),
-            'profit' => $this->faker->randomFloat(2, 0, 999999.99),
+            'supply_id' => Supply::factory(),
             'collector_id' => Collector::factory(),
         ];
     }

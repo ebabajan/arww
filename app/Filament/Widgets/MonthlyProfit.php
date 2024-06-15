@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use Filament\Widgets\Widget;
 use App\Models\Expense;
 use App\Models\Collection;
+use App\Models\Profit;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -30,7 +31,7 @@ class MonthlyProfit extends Widget
                 ->sum('amount');
 
             // Fetch the sum of collections (income) for the current month
-            $totalIncome = Collection::whereBetween('created_at', [$startOfMonth, $endOfMonth])
+            $totalIncome = Profit::whereBetween('created_at', [$startOfMonth, $endOfMonth])
                 ->sum('profit');
 
             // Calculate the profit by subtracting expenses from collections

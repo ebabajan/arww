@@ -6,32 +6,45 @@ models:
       hasMany: Collection
    
   Collection:
-    amount: unsignedBigInteger
+    amount_collected: unsignedBigInteger
     hawala_amount: unsignedBigInteger  # Changed to unsignedBigInteger for consistency
     pickup_time: nullable timestamp
-    rate_time: nullable timestamp
-    ex_rate_supplier: nullable decimal:4,2 # supplier exchange rate the rate done with supplier
-    supplier_rate: nullable decimal:4,2 # rate of the supplier ie 4.5%
     amount_to_pay: nullable decimal:10,2
-    exchange_rate: nullable decimal:4,4  # Assuming decimal for exchange_rate for precision
     overheads: nullable decimal:8,2
+    relationships:
+      belongsTo: Supply, Collector
+
+  Balance:
+    total_payable: nullable decimal:10,2
+    amount_paid_1: nullable decimal:10,2
+    amount_paid_2: nullable decimal:10,2
+    amount_paid_3: nullable decimal:10,2
+    amount_paid_4: nullable decimal:10,2
+    amount_paid_5: nullable decimal:10,2
+    remaining: nullable decimal:10,2
+    relationships:
+      belongsTo: Supply
+
+  Profit:
+    rate_time: nullable timestamp
+    converted: nullable decimal:4,4  # Assuming decimal for exchange_rate for precision
     profit: nullable decimal:8,2
     relationships:
-      belongsTo: Collector
+      belongsTo: Collection
       
   Supplier:
     name: string
-    location: nullable string
+    rate: nullable decimal:4,2
     relationships:
-      hasMany: supply
+      hasMany: Supply
 
   Supply:
     amount: unsignedBigInteger
-    rate: nullable decimal:8,2  # Changed to standard format for precision and scale
+    ex_rate: nullable decimal:4,4  # Changed to standard format for precision and scale
     date_supplied: nullable timestamp
-    day_rate: nullable decimal:8,4  # Changed to standard format for precision and scale
+    total_payable: nullable decimal:10,2
     relationships:
-      belongsTo: supplier
+      belongsTo: Supplier
 
   Branch: 
     name: string

@@ -22,7 +22,7 @@ class SupplierFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'location' => $this->faker->word(),
+            'rate' => $this->faker->randomFloat(2, 0, 99.99),
         ];
     }
 }
