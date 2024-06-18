@@ -23,4 +23,34 @@ class Supply extends Model
     {
         return $this->belongsTo(Supplier::class);
     }
+
+    public function balance()
+    {
+        return $this->hasOne(Balance::class);
+    }
+
+    public function totalSupply()
+    {
+        $amount = $this->amount;
+    
+        $supplierRate = $this->supplier->rate;
+    
+        $adjustedAmount = $amount - ($supplierRate / 100 * $amount);
+    
+        $totalPayable = $adjustedAmount * $this->ex_rate;
+    
+        $this->total_payable = $totalPayable;
+    
+        if ($this->balance) {
+            $this->balance->update(['total_payable' => $totalPayable]);
+        } else {
+            // Create a new balance record if it doesn't exist
+            $this->balance()->create(['total_payable' => $totalPayable, 'supply_id' => $this->id]);
+        }
+
+        $this->balance->save();
+    
+        $this->save();
+    }
+    
 }

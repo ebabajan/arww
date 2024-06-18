@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SupplyResource\Pages;
-use App\Filament\Resources\SupplyResource\RelationManagers;
-use App\Models\Supply;
+use App\Filament\Resources\ProfitResource\Pages;
+use App\Filament\Resources\ProfitResource\RelationManagers;
+use App\Models\Profit;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class SupplyResource extends Resource
+class ProfitResource extends Resource
 {
-    protected static ?string $model = Supply::class;
+    protected static ?string $model = Profit::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,19 +23,15 @@ class SupplyResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('amount')
-                    ->required()
+                Forms\Components\Select::make('collection_id')
+                ->relationship('collection', 'id')
+                ->required(),
+                Forms\Components\DatePicker::make('rate_time'),
+                Forms\Components\TextInput::make('converted')
                     ->numeric(),
-                Forms\Components\TextInput::make('ex_rate')
-                    ->label('Exchange @ done with suppier')
+                Forms\Components\TextInput::make('profit')
                     ->numeric(),
-                Forms\Components\DatePicker::make('date_supplied'),
-                Forms\Components\TextInput::make('total_payable')
-                    ->numeric()
-                    ->hidden(),
-                Forms\Components\Select::make('supplier_id')
-                    ->relationship('supplier', 'name')
-                    ->required(),
+              
             ]);
     }
 
@@ -43,20 +39,18 @@ class SupplyResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('amount')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('ex_rate')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('date_supplied')
+                Tables\Columns\TextColumn::make('collection.amount_collected')
+                ->label('Collection GBP')
+                ->numeric()
+                ->sortable(),
+                Tables\Columns\TextColumn::make('rate_time')
                     ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('total_payable')
-                    ->label('USD Amount')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('converted')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('supplier.name')
+                Tables\Columns\TextColumn::make('profit')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -73,10 +67,10 @@ class SupplyResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('calculate')
+                Tables\Actions\Action::make('calculate Profit')
                 ->icon('heroicon-o-calculator')
                 ->action(function($record){
-                    $record->totalSupply();
+                    $record->profit();
                 }),
             ])
             ->bulkActions([
@@ -96,9 +90,9 @@ class SupplyResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSupplies::route('/'),
-            'create' => Pages\CreateSupply::route('/create'),
-            'edit' => Pages\EditSupply::route('/{record}/edit'),
+            'index' => Pages\ListProfits::route('/'),
+            'create' => Pages\CreateProfit::route('/create'),
+            'edit' => Pages\EditProfit::route('/{record}/edit'),
         ];
     }
 }

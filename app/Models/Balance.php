@@ -26,4 +26,16 @@ class Balance extends Model
     {
         return $this->belongsTo(Supply::class);
     }
+
+    public function updateRemaining()
+    {
+        $this->remaining = $this->total_payable 
+            - $this->amount_paid_1 
+            - $this->amount_paid_2 
+            - $this->amount_paid_3 
+            - $this->amount_paid_4 
+            - $this->amount_paid_5;
+
+        $this->save();
+    }
 }

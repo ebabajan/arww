@@ -30,4 +30,14 @@ class Collection extends Model
     {
         return $this->belongsTo(Collector::class);
     }
+
+    public function profits()
+    {
+        return $this->hasMany(Profit::class);
+    }
+
+    public function collectionPayabaleUSD()
+    {
+        
+    }
 }

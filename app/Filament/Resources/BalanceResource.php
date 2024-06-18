@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CollectionResource\Pages;
-use App\Filament\Resources\CollectionResource\RelationManagers;
-use App\Models\Collection;
+use App\Filament\Resources\BalanceResource\Pages;
+use App\Filament\Resources\BalanceResource\RelationManagers;
+use App\Models\Balance;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CollectionResource extends Resource
+class BalanceResource extends Resource
 {
-    protected static ?string $model = Collection::class;
+    protected static ?string $model = Balance::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,23 +23,28 @@ class CollectionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('amount_collected')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('hawala_amount')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\DateTimePicker::make('pickup_time'),
-                Forms\Components\TextInput::make('amount_to_pay')
-                    ->numeric(),
-                Forms\Components\TextInput::make('overheads')
-                    ->numeric(),
                 Forms\Components\Select::make('supply_id')
-                    ->relationship('supply', 'id')
-                    ->required(),
-                Forms\Components\Select::make('collector_id')
-                    ->relationship('collector', 'name')
-                    ->required(),
+                ->relationship('supply', 'id')
+                ->hidden()
+                ->required(),
+                Forms\Components\TextInput::make('total_payable')
+                    ->hidden()
+                    ->numeric(),
+                Forms\Components\TextInput::make('amount_paid_1')
+                    ->label('Paid 1 USD')
+                    ->numeric(),
+                Forms\Components\TextInput::make('amount_paid_2')
+                    ->numeric(),
+                Forms\Components\TextInput::make('amount_paid_3')
+                    ->numeric(),
+                Forms\Components\TextInput::make('amount_paid_4')
+                    ->numeric(),
+                Forms\Components\TextInput::make('amount_paid_5')
+                    ->numeric(),
+                Forms\Components\TextInput::make('remaining')
+                    ->disabled()
+                    ->numeric(),
+               
             ]);
     }
 
@@ -47,31 +52,35 @@ class CollectionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('amount_collected')
-                    ->label('Collected')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('hawala_amount')
-                    ->label("Hawala")
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('pickup_time')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('amount_to_pay')
-                    ->label("Expected Amount")
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('overheads')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('supply.amount')
+                ->label("Supply GBP")
+                ->numeric()
+                ->sortable(),
+                Tables\Columns\TextColumn::make('total_payable')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('amount_paid_1')
+                    ->label('Paid USD')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('amount_paid_2')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('amount_paid_3')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('amount_paid_4')
                     ->numeric()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('collector.name')
+                Tables\Columns\TextColumn::make('amount_paid_5')
+                    ->numeric()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('remaining')
                     ->numeric()
                     ->sortable(),
+               
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -104,9 +113,9 @@ class CollectionResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCollections::route('/'),
-            'create' => Pages\CreateCollection::route('/create'),
-            'edit' => Pages\EditCollection::route('/{record}/edit'),
+            'index' => Pages\ListBalances::route('/'),
+            'create' => Pages\CreateBalance::route('/create'),
+            'edit' => Pages\EditBalance::route('/{record}/edit'),
         ];
     }
 }
