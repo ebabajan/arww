@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('suppliers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->decimal('rate', 4, 2)->nullable();
+            $table->decimal('rate', 6, 4)->nullable();
             $table->timestamps();
         });
     }

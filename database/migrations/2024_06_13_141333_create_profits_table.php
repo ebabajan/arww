@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('profits', function (Blueprint $table) {
             $table->id();
             $table->timestamp('rate_time')->nullable();
-            $table->decimal('converted', 4, 4)->nullable();
+            $table->decimal('converted', 6, 4)->nullable();
             $table->decimal('profit', 8, 2)->nullable();
             $table->foreignId('collection_id');
             $table->timestamps();

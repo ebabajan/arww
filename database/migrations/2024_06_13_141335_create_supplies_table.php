@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('supplies', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('amount');
-            $table->decimal('ex_rate', 4, 4)->nullable();
+            $table->decimal('ex_rate', 6, 4)->nullable();
             $table->timestamp('date_supplied')->nullable();
             $table->decimal('total_payable', 10, 2)->nullable();
             $table->foreignId('supplier_id');
