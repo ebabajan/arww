@@ -27,19 +27,25 @@ class CollectionResource extends Resource
                     ->required()
                     ->numeric(),
                 Forms\Components\TextInput::make('hawala_amount')
+                    ->label('Hawala: if there none put 0')
                     ->required()
                     ->numeric(),
-                Forms\Components\DateTimePicker::make('pickup_time'),
-                Forms\Components\TextInput::make('amount_to_pay')
-                    ->numeric(),
+                Forms\Components\DatePicker::make('pickup_time')
+                ->default(now()->toDateString()),
                 Forms\Components\TextInput::make('overheads')
+                    ->label('Overheads (extra charges or spendatures)')
                     ->numeric(),
                 Forms\Components\Select::make('supply_id')
-                    ->relationship('supply', 'id')
+                    ->label('Choose the supply')
+                    ->relationship('supply', 'amount')
                     ->required(),
                 Forms\Components\Select::make('collector_id')
                     ->relationship('collector', 'name')
                     ->required(),
+                Forms\Components\TextInput::make('amount_to_pay')
+                    ->label("Amount payable USD")
+                    ->disabled()
+                    ->numeric(),    
             ]);
     }
 
