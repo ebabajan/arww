@@ -73,11 +73,16 @@ class SupplyResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('calculate')
+                Tables\Actions\Action::make('Calculate')
                 ->icon('heroicon-o-calculator')
                 ->action(function($record){
-                    $record->totalSupply();
+                    $record->setPayable();
                 }),
+                Tables\Actions\Action::make('Update Balance')
+                ->icon('heroicon-o-calculator')
+                ->action(function($record){
+                    $record->updateBalance() ;
+                })->visible(fn ($record) => $record->total_payable !== null),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
