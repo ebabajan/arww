@@ -51,15 +51,22 @@ class Supply extends Model
 
         if($this->id && $this->total_payable)
         {
-            // $this->balance->supply_id = $this->id;
-            // $this->balance->total_payable = $this->total_payable;
-            $this->balance()->create( [
-                'supply_id' => $this->id, 
-                'total_payable' => $this->total_payable
-            ]);
+            $balance = $this->balance()->where('supply_id', $this->id)->first();
+
+            if($balance){
+                $this->balance()->update([
+                    'total_payable' => $totalPayable, 
+                ]);
+            }else{
+                $this->balance()->create( [
+                    'supply_id' => $this->id, 
+                    'total_payable' => $this->total_payable
+                ]);
+            }
+          
             $this->balance->save();
             return;
         }
-        $this->balance->save();
+
     }
 }
