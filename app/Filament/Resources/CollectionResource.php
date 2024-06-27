@@ -43,6 +43,7 @@ class CollectionResource extends Resource
                     ->relationship('collector', 'name')
                     ->required(),
                 Forms\Components\TextInput::make('amount_to_pay')
+                    ->hidden()
                     ->label("Amount payable USD")
                     ->disabled()
                     ->numeric(),    
@@ -62,11 +63,12 @@ class CollectionResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('pickup_time')
-                    ->dateTime()
+                    ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('amount_to_pay')
                     ->label("Expected Amount")
                     ->numeric()
+                    ->disabled()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('overheads')
                     ->numeric()

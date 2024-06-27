@@ -25,7 +25,6 @@ class BalanceResource extends Resource
             ->schema([
                 Forms\Components\Select::make('supply_id')
                 ->relationship('supply', 'id')
-                ->hidden()
                 ->required(),
                 Forms\Components\TextInput::make('total_payable')
                     ->hidden()
