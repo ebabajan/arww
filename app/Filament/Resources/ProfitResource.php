@@ -44,6 +44,7 @@ class ProfitResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('converted')
                     ->numeric()
+                    ->formatStateUsing(fn ($state) => number_format($state, 4)) // Format to 4 decimal places
                     ->sortable(),
                 Tables\Columns\TextColumn::make('profit')
                     ->numeric()
