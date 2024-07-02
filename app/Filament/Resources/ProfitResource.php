@@ -1,17 +1,13 @@
-<?php
+<?php 
 
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProfitResource\Pages;
-use App\Filament\Resources\ProfitResource\RelationManagers;
 use App\Models\Profit;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProfitResource extends Resource
 {
@@ -19,30 +15,29 @@ class ProfitResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function form(Form $form): Form
+    public static function form(Forms\Form $form): Forms\Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('collection_id')
-                ->relationship('collection', 'id')
-                ->required(),
+                    ->relationship('collection', 'id')
+                    ->required(),
                 Forms\Components\DatePicker::make('rate_time'),
                 Forms\Components\TextInput::make('converted')
                     ->numeric(),
                 Forms\Components\TextInput::make('profit')
                     ->numeric(),
-              
             ]);
     }
 
-    public static function table(Table $table): Table
+    public static function table(Tables\Table $table): Tables\Table
     {
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('collection.amount_collected')
-                ->label('Collection GBP')
-                ->numeric()
-                ->sortable(),
+                    ->label('Collection GBP')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('rate_time')
                     ->dateTime()
                     ->sortable()
@@ -63,15 +58,15 @@ class ProfitResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                // Add your filters here
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\Action::make('calculate Profit')
-                ->icon('heroicon-o-calculator')
-                ->action(function($record){
-                    $record->profit();
-                }),
+                    ->icon('heroicon-o-calculator')
+                    ->action(function ($record) {
+                        $record->profit($record);
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -83,7 +78,7 @@ class ProfitResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            // Define relations here
         ];
     }
 
